@@ -11,13 +11,13 @@ from scanner.scan import create_pdf
 
 
 st.set_page_config(
-    page_title="AI Document Scanner",
+    page_title="Nirvan Document Scanner",
     page_icon="📄",
     layout="centered"
 )
 
-st.title("📄 AI Document Scanner")
-st.markdown("Upload multiple images and generate a **clean scanned PDF**.")
+st.title("📄 Nirvan Document Scanner")
+st.markdown("Upload photos of receipts or documents and convert them into a **clean multi-page scanned PDF**.")
 
 uploaded_files = st.file_uploader(
     "Upload document images",
