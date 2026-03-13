@@ -114,7 +114,6 @@ st.divider()
 
 st.markdown(
 """
-Built with **Python, OpenCV and Streamlit**
 
 Created by **Nirvan Chhajed**
 """
