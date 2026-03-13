@@ -7,8 +7,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 import streamlit as st
 import cv2
 import numpy as np
-from scanner.scan import create_pdf
-
+from scanner.scan import DocScanner, create_pdf
 
 st.set_page_config(
     page_title="Nirvan Document Scanner",
@@ -17,7 +16,12 @@ st.set_page_config(
 )
 
 st.title("📄 Nirvan Document Scanner")
-st.markdown("Upload photos of receipts or documents and convert them into a **clean multi-page scanned PDF**.")
+
+st.markdown(
+"""
+Upload photos of receipts or documents and convert them into a **clean multi-page scanned PDF**.
+"""
+)
 
 uploaded_files = st.file_uploader(
     "Upload document images",
@@ -30,8 +34,6 @@ if uploaded_files:
     st.subheader("Uploaded Images")
 
     images = []
-
-    # Create grid layout
     cols = st.columns(3)
 
     for i, file in enumerate(uploaded_files):
@@ -46,24 +48,14 @@ if uploaded_files:
 
     if st.button("Generate PDF"):
 
+        scanner = DocScanner()
         scanned_pages = []
 
-        for img in images:
+        with st.spinner("Scanning documents..."):
 
-            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-            gray = cv2.GaussianBlur(gray, (5, 5), 0)
-
-            scanned = cv2.adaptiveThreshold(
-                gray,
-                255,
-                cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
-                cv2.THRESH_BINARY,
-                21,
-                15
-            )
-
-            scanned_pages.append(scanned)
+            for img in images:
+                scanned = scanner.scan(img)
+                scanned_pages.append(scanned)
 
         os.makedirs("output", exist_ok=True)
 
